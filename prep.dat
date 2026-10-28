@@ -1,0 +1,174 @@
+
+Brief About Yourself
+
+I’m a Cloud & Big Data Engineering professional with over 15 years of experience across Financial Services, Healthcare, and Telecom domains. My expertise spans Azure Databricks, PySpark, and Data Factory, where I design and optimize scalable data pipelines that transform raw data into actionable insights.
+
+I specialize in end‑to‑end architecture — from ingestion (Bronze/Silver/Gold layers) to CI/CD automation along with solution design and architecture discussions, code & technical design reviews, guiding team members and supporting production data platforms.
+
+Driven by curiosity and precision, I combine technical depth with business understanding, enabling organizations to make smarter, faster decisions through data.
+===============
+
+I have overall 15 years of experience in Data Engineering and Business Intelligence across Finance, Telecom and Healthcare domains.
+My expertise includes designing and building data solutions using Apache Spark, mainly with PySpark and Spark SQL, Azure Databricks, Azure Data Factory, Delta Lake, Azure Data Lake Storage, and scalable ETL pipelines.
+I have worked extensively on distributed data processing, data modelling, Lakehouse architecture, data security & governance, Spark optimization and enterprise data platform solutions
+Across my experience, I have been involved in solution design and architecture discussions, code & technical design reviews, guiding team members and supporting production data platforms.
+Beyond my technical skills, I bring strong delivery discipline through Agile methodology.
+------------------------------------------------------------------
+Explain Your Project
+Interview Answer-
+
+Jan 2025 till present -
+Recently I worked on an AML (Anti Money Laundering) platform for one of my banking clients, supporting multiple regions including NAM, APAC, EMEA, LATAM, Mexico, and SK.
+The platform used to monitor suspicious activities across capital market business lines including Foreign exchange, prime brokerage, and External entities.
+The system used to process large-scale trade, transactional data for suspicious activity monitoring and compliance reporting.
+we used Batch pipelines mainly for historical analysis, customer risk profiling, reconciliation, and regulatory reporting.
+and Incrmental pipelines for suspicious activity monitoring and alert generation.
+Data was ingested from enterprise source systems using Azure Data Factory and Autoloader.
+Spark and Databricks were used for distributed processing, ETL pipelines, enrichment, AML rule execution, and Delta Lake processing.
+The platform used Medallion Architecture with Bronze, Silver, and Gold layers for scalable and governed data processing.
+My core responsibility was to design end-to-end data solutions for AML use cases, define architecture standards and best practices, and guide teams in building scalable, secure, and reliable data platforms.
+
+**** source -> ADF (trigger pipeline time based or event based)-> Bronze layer(raw folder) -> SCD2 & other transformation & enrichments and load in silver layer -> risk scoring basis on typologies & defined thresholds, we generate alerts for customers and transactions -> create semantic views for further used by downstream users by securing region level access.*****
+
+- Batch Ingestion (ADF → Bronze)
+ ADF Copy Activity moves bulk data (e.g., daily extracts from SQL, CSV files) into the Bronze layer of your Data Lake.
+ Triggered on a schedule (nightly, hourly, or event‑based).
+ Ensures historical completeness and large‑volume ingestion.
+
+- INcremental Ingestion 
+•	Parameterised ADF Pipelines call REST APIs → dump JSON/XML payloads into ADLS Gen2.
+•	Databricks Autoloader ingests raw API responses into Delta tables in the Bronze layer.
+•	Data remains unaltered (raw, semi-structured) for traceability and compliance. → builds Silver (latest snapshot) -> SCD2 logic → builds Gold (historical lineage).
+
+Source -
+•	Core Banking Systems APIs
+o	Customer account details, balances, transactions
+
+In practice, you’d design parameterized ADF pipelines or Databricks notebooks that hit these REST endpoints, capture incremental loads (transactional data) and batch loads (reference data), and store them in the Bronze layer for downstream SCD2 and enrichment.
+
+Components -
+•	Linked Service (BankingAPI_DS) Defines the REST API endpoint (e.g., core banking, payments, CRM). 
+•	Dataset (Bronze_ADLS_DS) Points to Azure Data Lake Storage Gen2 in the Bronze layer. 
+•	Copy Activity Moves raw JSON/XML payloads from the API → ADLS Bronze.
+o	Source: REST API
+o	Sink: JSON files in Bronze
+
+Flow -
+1.	ADF pipeline calls the REST API.
+2.	Raw response (JSON/XML) is stored in ADLS Bronze.
+3.	Databricks Autoloader picks up new files and writes them into Delta tables for downstream Silver/Gold processing
+------------------------------------------------------
+
+Jan 2020 - 2025 -
+I was working on an End to End reconciliation framework between enterprise sources and applications. There I got a chance to lead the Hive-to-PySpark migration for the project, defining migration strategy, prioritizing jobs by complexity and criticality, and establishing team coding standards.
+I analyzed source systems and process flows, built on Talend, and Hive and replaced it with pyspark jobs.
+----------------------------------------------------
+1. Design End-to-End Data Solutions for AML Use Cases
+You design the complete flow from source systems to AML reports, alerts, and analytics.
+2. Define Architecture Standards and Best Practices
+Ingestion Standard - All source systems land data in Bronze.
+Data Quality Standard - Mandatory validation before Silver.
+Delta Standard - All tables stored in Delta format.
+Naming Standard – 
+bronze_customer
+silver_customer
+gold_customer_risk
+Security Standard - PII columns masked for non-authorized users.
+
+
+________________________________________
+Possible Follow-Up Questions
+Q1. What kind of data were you processing?
+Answer:
+We processed trade data, transaction data, customer/KYC data, journal movements, asset transfer data, and compliance/reference data.
+________________________________________
+Q2. What were your data sources?
+Answer:
+Data was ingested from transaction systems, trade platforms, customer master systems, APIs, relational databases, flat files, and external compliance/watchlist sources.
+________________________________________
+Q3. How was data ingested?
+Answer:
+For batch ingestion we mainly used Azure Data Factory pipelines to ingest data from databases, APIs, and flat files into the Bronze layer.
+For streaming ingestion we used Azure Event Hubs with Spark Structured Streaming.
+________________________________________
+Q4. Why Spark and Databricks?
+Answer:
+Because the platform processed huge transaction volumes requiring distributed processing, large-scale transformations, enrichment joins, streaming processing, and optimized ETL workloads.
+________________________________________
+Q5. Why Delta Lake?
+Answer:
+Delta Lake was used for ACID transactions, schema enforcement, merge operations, reliable streaming writes, and scalable governed data processing.
+________________________________________
+3. Explain Project Use Cases
+Important Understanding Before Use Cases
+In AML systems, both historical analysis and streaming monitoring are used together.
+Historical analysis focuses on analyzing past customer behavior and transaction history to identify unusual patterns over time.
+Streaming monitoring focuses on detecting suspicious activities quickly as events arrive in near real-time.
+The engineering team mainly builds scalable ingestion, ETL, enrichment, and AML processing pipelines while compliance/business teams define AML rules and thresholds.
+________________________________________
+Difference Between Transaction Events and Trade Events
+Transaction Events:
+•	money movement
+•	payments
+•	journal transfers
+•	wire transfers
+•	asset movement
+Example: Customer transfers 500,000 USD between accounts.
+Trade Events:
+•	buy/sell financial instruments
+•	FX trades
+•	equity trades
+•	bond trades
+Example: Customer performs a large FX currency trade.
+Both transaction events and trade events are monitored by AML systems because suspicious activity can happen in both areas.
+________________________________________
+Understanding Enterprise Source Systems
+Data was ingested from multiple enterprise systems.
+These are generic business terms because every bank may use different applications internally.
+Examples:
+Transaction Systems: Systems generating banking transaction data such as payments, wire transfers, journals, and account movements.
+Trade Platforms: Systems generating FX trades, equity trades, asset transfers, and capital market activity.
+Customer Master Systems: Systems storing customer profile, account, and KYC information.
+Reference Data Systems: Systems storing country risk information, currency mappings, risk categories, and sanctions/watchlist data.
+External Compliance Sources: Third-party compliance and sanctions data providers.
+________________________________________
+Understanding Data Ingestion
+Real enterprise data exists across multiple systems.
+Examples:
+•	SQL Server/Oracle databases
+•	APIs
+•	flat files like CSV/Parquet
+•	streaming event systems
+•	enterprise applications
+ADF pipelines were mainly used for batch ingestion from databases, APIs, and files.
+Azure Event Hubs was used for streaming ingestion of trade and transaction events.
+The ingested data was stored in Bronze layer Delta tables before further processing.
+--------------------------------------------------------------------------------------------
+Explain Project Use Cases
+Use Case 1 — Historical Analysis
+Interview Answer
+One major use case was historical transaction analysis for AML compliance monitoring.
+The platform analyzed large volumes of historical trade and transaction data to identify unusual customer behavior, suspicious transaction patterns, and high-risk activities.
+For example, if a customer suddenly performed unusually large FX trades or rapid asset transfers compared to historical behavior, the system generated a higher risk score.
+Batch pipelines processed historical data across multiple regions and business lines to support compliance reporting, customer risk profiling, and regulatory investigations.
+________________________________________
+Use Case 2 — Streaming Alert System
+Interview Answer
+Another important use case was near real-time suspicious activity monitoring.
+Trade and transaction events were streamed through Azure Event Hubs and processed using Spark Structured Streaming in Databricks.
+The streaming pipeline applied AML validation rules, risk scoring logic, and suspicious activity detection.
+For example, if unusually high-value FX trades or rapid journal movements were detected from high-risk entities, the system generated compliance alerts within near real-time.
+The alerts were consumed by downstream compliance systems and monitoring dashboards.
+________________________________________
+Follow-Up Questions
+Q1. Why streaming was needed?
+Answer:
+Some suspicious activities required faster response for compliance and fraud monitoring, so near real-time processing helped generate alerts quickly.
+-----------------------------------------------------------------------------
+
+Conflict within the team?
+Yes, I faced a situation where two senior engineers disagreed on onboarding a new source.
+One wanted a quick custom pipeline to meet the deadline, while the other wanted a reusable framework for future scalability.
+I brought them together and reviewed the trade-offs. Since our existing pipelines were stable, we decided not to touch them. Instead, we built a lightweight reusable framework only for new sources.
+This helped us meet the timeline, avoid production risk, and make future onboarding easier.
+It was a good example of balancing short-term delivery with long-term architecture goals.
