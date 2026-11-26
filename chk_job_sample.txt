@@ -1,0 +1,37 @@
+Private Declare PtrSafe Function SetCursorPos Lib "user32" (ByVal x As Long, ByVal y As Long) As Long
+Sub jadu1()
+Dim x As Long
+Dim y As Long
+Randomize
+x = Int((600 * Rnd) + 1)
+y = x
+
+SetCursorPos x, y
+
+End Sub
+Sub jadu()
+    stopmacro = False
+    
+    Sheet1.Activate
+    Sheet1.Range("B4").Select
+    
+    Do While Not stopmacro
+        Randomize
+        Select Case Int((4 * Rnd) + 1)
+            Case 1
+                SendKeys "{UP}", True
+            Case 2
+                SendKeys "{DOWN}", True
+            Case 3
+                SendKeys "{LEFT}", True
+            Case 4
+                SendKeys "{RIGHT}", True
+        End Select
+    Application.Wait Now + TimeValue("00:01:00")
+    Sheet1.Activate
+    Sheet1.Range("B4").Select
+    Call jadu1
+    Application.Wait Now + TimeValue("00:00:10")
+    Loop
+    
+End Sub
